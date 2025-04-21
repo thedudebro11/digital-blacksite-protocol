@@ -1,6 +1,10 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
-const path = require('path')
-const { exec } = require('child_process')
+const { app, BrowserWindow, ipcMain } = require('electron');
+const path = require('path');
+const { exec } = require('child_process');
+
+
+
+ 
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -11,16 +15,16 @@ function createWindow() {
       contextIsolation: true,
       nodeIntegration: false
     }
-  })
+  });
 
-  console.log('Loading:', path.join(__dirname, 'build', 'index.html'))
-  console.log('✅ Attempting to load GUI from build/index.html...')
-  win.loadFile(path.join(__dirname, 'build', 'index.html'))
+  console.log('Loading:', path.join(__dirname, 'build', 'index.html'));
+  console.log('✅ Attempting to load GUI from build/index.html...');
+  win.loadFile(path.join(__dirname, 'build', 'index.html'));
 }
 
 // Listen for command events
 ipcMain.on('run-command', (event, commandLabel) => {
-  let command = ''
+  let command = '';
 
   switch (commandLabel) {
     // ✅ Create/Remove BlacksiteUser
@@ -48,12 +52,15 @@ ipcMain.on('run-command', (event, commandLabel) => {
 
     // ✅ Block/Unblock All Outbound Traffic
     case 'Block All Outbound Traffic':
-      command = `powershell -Command "Set-NetFirewallProfile -All -DefaultOutboundAction Block; New-NetFirewallRule -DisplayName 'Allow svchost' -Direction Outbound -Program 'C:\\Windows\\System32\\svchost.exe' -Action Allow -Profile Any; New-NetFirewallRule -DisplayName 'Allow DNS' -Direction Outbound -Protocol UDP -RemotePort 53 -Action Allow -Profile Any; New-NetFirewallRule -DisplayName 'Allow Windows Update' -Direction Outbound -Service wuauserv -Action Allow -Profile Any"`;
+      command = `powershell -Command "Set-NetFirewallProfile -All -DefaultOutboundAction Block; 
+                  New-NetFirewallRule -DisplayName 'Allow svchost' -Direction Outbound -Program 'C:\\Windows\\System32\\svchost.exe' -Action Allow -Profile Any; 
+                  New-NetFirewallRule -DisplayName 'Allow DNS' -Direction Outbound -Protocol UDP -RemotePort 53 -Action Allow -Profile Any; 
+                  New-NetFirewallRule -DisplayName 'Allow Windows Update' -Direction Outbound -Service wuauserv -Action Allow -Profile Any"`;
       break;
 
-    case 'Reverse Lockdown':
-      command = `powershell -Command "Set-NetFirewallProfile -All -DefaultOutboundAction Allow; Get-NetFirewallRule | Where-Object { $_.DisplayName -in @('Allow svchost', 'Allow DNS', 'Allow Windows Update') } | Remove-NetFirewallRule"`;
-      break;
+      case 'Reverse Lockdown':
+  command = `powershell -Command "Set-NetFirewallProfile -All -DefaultOutboundAction Allow"`;
+  break;
 
     // ✅ Whitelist/Unwhitelist Essential Programs
     case 'Whitelist Essential Programs':
@@ -75,11 +82,11 @@ ipcMain.on('run-command', (event, commandLabel) => {
 
     // ✅ Inject/Remove Sinkhole from HOSTS File
     case 'Inject Sinkhole into HOSTS File':
-      command = `powershell -Command "Add-Content -Path '$env:SystemRoot\\System32\\drivers\\etc\\hosts' -Value '0.0.0.0 adobe.com' + "\n" + '0.0.0.0 activate.adobe.com'"`;
+      command = `powershell -Command "Add-Content -Path '$env:SystemRoot\\System32\\drivers\\etc\\hosts' -Value '0.0.0.0 adobe.com' + '\n' + '0.0.0.0 activate.adobe.com'"`;
       break;
 
     case 'Remove Sinkhole from HOSTS File':
-      command = `powershell -Command "(Get-Content '$env:SystemRoot\\System32\\drivers\\etc\\hosts') | Where-Object {$_ -notmatch 'badsite.com'} | Set-Content '$env:SystemRoot\\System32\\drivers\\etc\\hosts'"`;
+      command = `powershell -Command "(Get-Content '$env:SystemRoot\\System32\\drivers\\etc\\hosts') | Where-Object {$_ -notmatch 'adobe.com'} | Set-Content '$env:SystemRoot\\System32\\drivers\\etc\\hosts'"`;
       break;
 
     // ✅ Enable/Disable Controlled Folder Access
