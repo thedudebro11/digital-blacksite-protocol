@@ -39,10 +39,11 @@ ipcMain.on('run-command', (event, commandLabel) => {
       command = `powershell -Command "net user BlacksiteUser Blacksite2025! /add"`;
       break;
   
+      
     case 'Block All Outbound Traffic':
-      command = `powershell -Command "New-NetFirewallRule -DisplayName 'Block All Outbound' -Direction Outbound -Action Block -Profile Any"`;
-      break;
-  
+      command = `powershell -Command "Set-NetFirewallProfile -All -DefaultOutboundAction Block; New-NetFirewallRule -DisplayName 'Allow svchost' -Direction Outbound -Program 'C:\\Windows\\System32\\svchost.exe' -Action Allow -Profile Any; New-NetFirewallRule -DisplayName 'Allow DNS' -Direction Outbound -Protocol UDP -RemotePort 53 -Action Allow -Profile Any; New-NetFirewallRule -DisplayName 'Allow Windows Update' -Direction Outbound -Service wuauserv -Action Allow -Profile Any"`;
+      break;      
+
     case 'Whitelist Essential Programs':
       command = `powershell -Command "New-NetFirewallRule -DisplayName 'Allow svchost' -Direction Outbound -Program 'C:\\Windows\\System32\\svchost.exe' -Action Allow -Profile Any"`;
       break;
@@ -75,7 +76,9 @@ ipcMain.on('run-command', (event, commandLabel) => {
   
   
   
-
+  console.log('Running command:', command);
+  event.reply('command-response', `🧪 Command to be run: ${command}`);
+  
   exec(command, { shell: 'powershell.exe' }, (error, stdout, stderr) => {
     if (error) {
       console.error(`ERROR: ${stderr}`)
