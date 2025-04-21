@@ -1,97 +1,109 @@
-/* App.css - Enhanced Cyberpunk Styling (Centered & Enlarged) */
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
 body {
   font-family: 'Share Tech Mono', monospace;
-  background-color: #000000;
+  background-color: #000;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  text-align: center;
   flex-direction: column;
+  align-items: center;
+}
+
+/* Title Text */
+.title {
+  font-size: 2.5rem;
+  margin: 2rem 0 1rem;
+  text-align: center;
+  color: #00ff99;
 }
 
 .glow-text {
   text-shadow: 0 0 5px #00ff99, 0 0 10px #00ff99, 0 0 20px #00ff99;
 }
 
-button {
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
+/* Wrapper around everything */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
   width: 100%;
-  font-size: 1.25rem;
-  padding: 1.25rem;
-  margin: 0.5rem 0;
-  max-width: 400px;
+  max-width: 100%;
 }
 
-button::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 300%;
-  height: 300%;
-  background: rgba(0, 255, 150, 0.05);
-  transition: transform 0.5s, opacity 0.5s;
-  transform: translate(-50%, -50%) scale(0);
-  border-radius: 50%;
-  z-index: 0;
-}
-
-button:active::before {
-  transform: translate(-50%, -50%) scale(1);
-  opacity: 1;
-}
-
-button span {
-  position: relative;
-  z-index: 1;
-}
-
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #111;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #00ff99;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #00cc77;
-}
-
-/* Container Glow Panel */
-.container-panel {
+/* UI panel */
+.panel-container {
   background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(8px);
   border: 1px solid #00ff99;
   box-shadow: 0 0 15px rgba(0, 255, 153, 0.2);
-  border-radius: 20px;
+  border-radius: 1rem;
   padding: 2rem;
-  margin: 2rem auto;
-  width: 90%;
-  max-width: 900px;
-  text-align: center;
+  width: 100%;
+  max-width: 500px;
+  backdrop-filter: blur(10px);
 }
 
-/* Button Shine FX */
-button:hover {
-  background: linear-gradient(90deg, #00ff99, #00ffaa);
-  color: #000;
+/* All button rows */
+.grid-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* Default main buttons */
+.main-button {
+  width: 100%;
+  max-width: 400px;
+  padding: 1rem;
+  font-size: 1rem;
+  background: rgba(0, 255, 150, 0.1);
+  border: 1px solid #00ff99;
+  color: #00ff99;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.main-button:hover {
+  background-color: #00ffaa;
+  color: black;
   box-shadow: 0 0 10px #00ff99, 0 0 30px #00ffaa;
-  transition: all 0.3s ease-in-out;
+}
+
+
+/* Flex pair for Block + Reverse */
+.flex {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.reverse-btn {
+  width: 48px; /* match icon size */
+  height: 48px;
+  background: rgba(0, 255, 150, 0.1); /* same as main buttons */
+  border: 1px solid #00ff99;
+  color: #00ff99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.reverse-btn:hover {
+  background-color: #00ffaa;
+  color: black;
+  box-shadow: 0 0 10px #00ff99, 0 0 30px #00ffaa;
+}
+
+.reverse-btn img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
 }
 
 .status-text {
@@ -99,22 +111,18 @@ button:hover {
   text-align: center;
   margin-top: 1.5rem;
   text-shadow: 0 0 5px #00ff99;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
-/* Responsive Typography */
-h1 {
-  font-size: 2.5rem;
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-@media (min-width: 768px) {
-  h1 {
-    font-size: 3rem;
+/* Responsive: Stack the reverse button under on small screens */
+@media (max-width: 480px) {
+  .flex {
+    flex-direction: column;
+    align-items: center;
   }
-  button {
-    font-size: 1.5rem;
-    padding: 1.5rem;
+
+  .reverse-btn {
+    width: 100%;
+    height: 48px;
   }
 }
