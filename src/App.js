@@ -6,6 +6,39 @@ import reverseIcon from './assets/reverse.png'
 import ReversibleButton from './ReversibleButton'
 import './App.css'
 
+const reversibleActions = [
+  {
+    label: 'Create BlacksiteUser',
+    reset: 'Remove BlacksiteUser'
+  },
+  {
+    label: 'Block All Outbound Traffic',
+    reset: 'Reverse Lockdown'
+  },
+  {
+    label: 'Whitelist Essential Programs',
+    reset: 'Unwhitelist Essential Programs'
+  },
+  {
+    label: 'Block Cracked EXEs',
+    reset: 'Unblock Cracked EXEs'
+  },
+  {
+    label: 'Inject Sinkhole into HOSTS File',
+    reset: 'Remove Sinkhole from HOSTS File'
+  },
+  {
+    label: 'Enable Controlled Folder Access',
+    reset: 'Disable Controlled Folder Access'
+  },
+  {
+    label: 'Disable All Network Interfaces',
+    reset: 'Enable All Network Interfaces'
+  }
+]
+
+const oneWayActions = ['Run BleachBit Cleanup']
+
 export default function BlacksiteLauncher() {
   const [status, setStatus] = useState('Awaiting deployment...')
   const audio = new Audio(clickSound)
@@ -24,39 +57,6 @@ export default function BlacksiteLauncher() {
     setStatus(`Executing ${label}...`)
     window.electronAPI.runCommand(label)
   }
-
-  const reversibleActions = [
-    {
-      label: 'Create BlacksiteUser',
-      reset: 'Remove BlacksiteUser'
-    },
-    {
-      label: 'Block All Outbound Traffic',
-      reset: 'Reverse Lockdown'
-    },
-    {
-      label: 'Whitelist Essential Programs',
-      reset: 'Unwhitelist Essential Programs'
-    },
-    {
-      label: 'Block Cracked EXEs',
-      reset: 'Unblock Cracked EXEs'
-    },
-    {
-      label: 'Inject Sinkhole into HOSTS File',
-      reset: 'Remove Sinkhole from HOSTS File'
-    },
-    {
-      label: 'Enable Controlled Folder Access',
-      reset: 'Disable Controlled Folder Access'
-    },
-    {
-      label: 'Disable All Network Interfaces',
-      reset: 'Enable All Network Interfaces'
-    }
-  ]
-
-  const oneWayActions = ['Run BleachBit Cleanup']
 
   return (
     <div className="app-container">
@@ -86,7 +86,7 @@ export default function BlacksiteLauncher() {
             />
           ))}
 
-          {oneWayActions.map((label, index) => (
+          {oneWayActions.map((label) => (
             <motion.button
               key={label}
               whileHover={{ scale: 1.05 }}
